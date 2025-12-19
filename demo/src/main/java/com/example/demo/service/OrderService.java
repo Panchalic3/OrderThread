@@ -6,8 +6,6 @@ import com.example.demo.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -38,16 +36,14 @@ public class OrderService {
         return repo.findById(orderId).orElseGet(null);
     }
 
-//    // 3️⃣ Cancel Order (optional)
-//    public OrderResponse cancelOrder(String orderId) {
-//        OrderResponse order = orderStore.get(orderId);
-//        if (order == null) {
-//            return new OrderResponse(orderId, "NOT_FOUND", "Order not found");
-//        }
-//
-//        // Set status to CANCELLED (threading will check this later)
-//        order.setStatus("CANCELLED");
-//        order.setMessage("Order cancelled successfully");
-//        return order;
-//    }
+    // 3️⃣ Cancel Order (optional)
+    public OrderResponse cancelOrder(String orderId) {
+        OrderRequest order = repo.findById(orderId).orElseGet(null);
+        if (order == null) {
+            return new OrderResponse(orderId, "NOT_FOUND", "Order not found");
+        }
+
+        order.setStatus("Cancelled");
+        return new OrderResponse(orderId, "Cancelled", "Order is cancelled");
+    }
 }

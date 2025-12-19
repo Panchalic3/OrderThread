@@ -29,8 +29,8 @@ public class OrderController {
         return orderService.getOrderStatus(orderId);
     }
 
-//    @DeleteMapping("/{orderId}")
-//    public OrderResponse cancelOrder(@PathVariable String orderId) {
-//        return orderService.cancelOrder(orderId);
-//    }
+    @DeleteMapping("/{orderId}")
+    public OrderResponse cancelOrder(@PathVariable String orderId) {
+        return orderService.cancelOrder(orderId);
+    }
 }

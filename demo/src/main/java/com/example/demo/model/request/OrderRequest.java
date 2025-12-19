@@ -20,5 +20,6 @@ public class OrderRequest {
     private List<String> items;
     private List<Integer> quantities;
     private String paymentMethod;
+    private String status;
 
 }
