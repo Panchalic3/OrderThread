@@ -2,32 +2,36 @@ package com.example.demo.service;
 
 import com.example.demo.model.request.OrderRequest;
 import com.example.demo.model.response.OrderResponse;
+import com.example.demo.process.OrderProcess;
 import com.example.demo.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
 
 @Service
+@AllArgsConstructor
 public class OrderService {
 
-    @Autowired
     OrderRepository repo;
+    ExecutorService executorService;
+    OrderProcess process;
 
-    // 1️⃣ Create Order
+    //  Create Order
     public OrderResponse createOrder(OrderRequest orderRequest) {
-        // Generate order ID
         String orderId = UUID.randomUUID().toString();
         orderRequest.setOrderID(orderId);
-        OrderRequest saved =repo.save(orderRequest);
+        orderRequest.setStatus("CREATED");
+        OrderRequest saved = repo.save(orderRequest);
 
         OrderResponse response = new OrderResponse();
         response.setOrderId(saved.getOrderID());
-        response.setStatus("CREATED");
+        response.setStatus(saved.getStatus());
         response.setMessage("Order received and processing started");
 
-        // ✅ Here, later we will trigger async tasks like payment, inventory, notification
-
+        // 🔥 BACKGROUND PROCESSING STARTS HERE
+        executorService.submit(() -> process.processOrder(orderId));
         return response;
     }
 
