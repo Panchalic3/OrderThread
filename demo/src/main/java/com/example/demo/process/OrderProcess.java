@@ -23,17 +23,14 @@ public class OrderProcess {
     }
 
     private void processPayment(String orderId) {
-        System.out.println("payment");
         updateStatus(orderId, "PAYMENT_SUCCESS", "Payment processed");
     }
 
     private void updateInventory(String orderId) {
-        System.out.println("inven");
         updateStatus(orderId, "INVENTORY_UPDATED", "Inventory updated");
     }
 
     private void sendNotification(String orderId) {
-        System.out.println("notofi");
         updateStatus(orderId, "COMPLETED", "Order completed");
     }
 
