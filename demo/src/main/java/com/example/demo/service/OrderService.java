@@ -23,6 +23,12 @@ public class OrderService {
         String orderId = UUID.randomUUID().toString();
         orderRequest.setOrderID(orderId);
         orderRequest.setStatus("CREATED");
+
+        //TASK 2.4: FIX RACE CONDITION - Set these false initially
+        orderRequest.setPaymentDone(false);
+        orderRequest.setInventoryDone(false);
+        orderRequest.setNotificationDone(false);
+
         OrderRequest saved = repo.save(orderRequest);
 
         OrderResponse response = new OrderResponse();

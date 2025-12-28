@@ -22,4 +22,9 @@ public class OrderRequest {
     private String paymentMethod;
     private String status;
 
+    //TASK 2.4: FIX RACE CONDITION - These are added to fix the race condition
+    private Boolean paymentDone;
+    private Boolean inventoryDone;
+    private Boolean notificationDone;
+
 }

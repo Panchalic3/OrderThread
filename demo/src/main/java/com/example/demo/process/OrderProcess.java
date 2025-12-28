@@ -23,22 +23,36 @@ public class OrderProcess {
     }
 
     private void processPayment(String orderId) {
-        updateStatus(orderId, "PAYMENT_SUCCESS", "Payment processed");
+        OrderRequest order = orderRepository.findById(orderId).get();
+        order.setPaymentDone(true);
+        orderRepository.save(order);
+        checkAndMarkCompleted(orderId);
     }
 
     private void updateInventory(String orderId) {
-        updateStatus(orderId, "INVENTORY_UPDATED", "Inventory updated");
+        OrderRequest order = orderRepository.findById(orderId).get();
+        order.setInventoryDone(true);
+        orderRepository.save(order);
+        checkAndMarkCompleted(orderId);
+
     }
 
     private void sendNotification(String orderId) {
-        updateStatus(orderId, "COMPLETED", "Order completed");
+        OrderRequest order = orderRepository.findById(orderId).get();
+        order.setNotificationDone(true);
+        orderRepository.save(order);
+        checkAndMarkCompleted(orderId);
     }
 
-    private void updateStatus(String orderId, String status, String message) {
-        Optional<OrderRequest> optionalOrder = orderRepository.findById(orderId);
-        if (optionalOrder.isPresent()) {
-            OrderRequest order = optionalOrder.get();
-            order.setStatus(status);
+    private synchronized void checkAndMarkCompleted(String orderId) {
+
+        OrderRequest order = orderRepository.findById(orderId).get();
+
+        if (order.getPaymentDone()
+                && order.getInventoryDone()
+                && order.getNotificationDone()) {
+
+            order.setStatus("COMPLETED");
             orderRepository.save(order);
         }
     }
