@@ -17,31 +17,20 @@ public class OrderProcess {
     ExecutorService executorService;
 
     public void processOrder(String orderId) {
-        System.out.println("process here " + System.currentTimeMillis());
-        System.out.println("process here " + Thread.currentThread().getName());
-
         executorService.submit(() -> processPayment(orderId));
         executorService.submit(() -> updateInventory(orderId));
         executorService.submit(() -> sendNotification(orderId));
     }
 
     private void processPayment(String orderId) {
-        System.out.println("payment " + Thread.currentThread().getName());
-        System.out.println("payment " + System.currentTimeMillis());
         updateStatus(orderId, "PAYMENT_SUCCESS", "Payment processed");
     }
 
     private void updateInventory(String orderId) {
-        System.out.println("inventory  " + Thread.currentThread().getName());
-        System.out.println("inven " + System.currentTimeMillis());
-
         updateStatus(orderId, "INVENTORY_UPDATED", "Inventory updated");
     }
 
     private void sendNotification(String orderId) {
-        System.out.println("noti " + Thread.currentThread().getName());
-        System.out.println("noti " + System.currentTimeMillis());
-
         updateStatus(orderId, "COMPLETED", "Order completed");
     }
 
