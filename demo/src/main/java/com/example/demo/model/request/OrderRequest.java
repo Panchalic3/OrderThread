@@ -2,6 +2,7 @@ package com.example.demo.model.request;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,4 +28,7 @@ public class OrderRequest {
     private Boolean inventoryDone;
     private Boolean notificationDone;
 
+    //TASK 2.3: LOST UPDATE PROBLEM - added for optimistic locking
+    @Version
+    private Long version;
 }

@@ -4,8 +4,6 @@ import com.example.demo.model.request.OrderRequest;
 import com.example.demo.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 
 @Component
@@ -23,25 +21,15 @@ public class OrderProcess {
     }
 
     private void processPayment(String orderId) {
-        OrderRequest order = orderRepository.findById(orderId).get();
-        order.setPaymentDone(true);
-        orderRepository.save(order);
-        checkAndMarkCompleted(orderId);
+        retryUpdate(orderId, "PAYMENT");
     }
 
     private void updateInventory(String orderId) {
-        OrderRequest order = orderRepository.findById(orderId).get();
-        order.setInventoryDone(true);
-        orderRepository.save(order);
-        checkAndMarkCompleted(orderId);
-
+        retryUpdate(orderId, "INVENTORY");
     }
 
     private void sendNotification(String orderId) {
-        OrderRequest order = orderRepository.findById(orderId).get();
-        order.setNotificationDone(true);
-        orderRepository.save(order);
-        checkAndMarkCompleted(orderId);
+        retryUpdate(orderId, "NOTIFICATION");
     }
 
     private synchronized void checkAndMarkCompleted(String orderId) {
@@ -54,6 +42,28 @@ public class OrderProcess {
 
             order.setStatus("COMPLETED");
             orderRepository.save(order);
+        }
+    }
+
+    //TASK 2.3: LOST UPDATE PROBLEM - added for optimistic locking
+    private void retryUpdate(String orderId, String type) {
+        boolean updated = false;
+        while (!updated) {
+            try {
+                OrderRequest order = orderRepository.findById(orderId).get();
+                switch (type) {
+                    case "PAYMENT" -> order.setPaymentDone(true);
+                    case "INVENTORY" -> order.setInventoryDone(true);
+                    case "NOTIFICATION" -> order.setNotificationDone(true);
+                }
+                orderRepository.save(order);
+                updated = true;
+
+                checkAndMarkCompleted(orderId);
+
+            } catch (org.springframework.dao.OptimisticLockingFailureException e) {
+                // another thread updated first → retry
+            }
         }
     }
 }
