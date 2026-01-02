@@ -3,6 +3,7 @@ package com.example.demo.process;
 import com.example.demo.model.request.OrderRequest;
 import com.example.demo.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
 import java.util.concurrent.ExecutorService;
 
@@ -61,7 +62,7 @@ public class OrderProcess {
 
                 checkAndMarkCompleted(orderId);
 
-            } catch (org.springframework.dao.OptimisticLockingFailureException e) {
+            } catch (OptimisticLockingFailureException e) {
                 // another thread updated first → retry
             }
         }
