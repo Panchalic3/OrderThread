@@ -12,6 +12,8 @@ import javax.crypto.SecretKey;
 @Component
 public class JwtUtil {
     /**
+     * HEADER.PAYLOAD.SIGNATURE
+     *
      * Jwts(JSON Web Tokens(plural)) is a utility class provided by the
      * JJWT(Java JSON Web Token) library for creating and parsing JSON Web Tokens.
      *

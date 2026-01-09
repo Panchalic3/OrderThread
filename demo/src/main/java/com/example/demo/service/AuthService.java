@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.util.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +12,14 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    // added as a part of step 6 for jwt generation upon successful login
+    private final JwtUtil jwtUtil;
 
     public AuthService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     public String login(String username, String password) {
@@ -27,9 +31,12 @@ public class AuthService {
                 passwordEncoder.matches(password, user.getPassword());
 
         if (!passwordMatched) {
-               throw new RuntimeException("Invalid credentials");
+            throw new RuntimeException("Invalid credentials");
         }
 
-        return "Login successful";
+        /* added as a part of step 6 for jwt generation upon successful login,
+         prior to this we were returning a success msg string
+         */
+        return jwtUtil.generateToken(user.getUsername());
     }
 }
