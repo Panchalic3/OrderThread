@@ -5,6 +5,7 @@ import com.example.demo.model.request.OrderRequest;
 import com.example.demo.model.response.OrderResponse;
 import com.example.demo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,6 +30,7 @@ public class OrderController {
         return orderService.getOrderStatus(orderId);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{orderId}")
     public OrderResponse cancelOrder(@PathVariable String orderId) {
         return orderService.cancelOrder(orderId);
