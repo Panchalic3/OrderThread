@@ -59,3 +59,11 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+
+// we can also do this instead of method level authorization
+//.authorizeHttpRequests(auth -> auth
+//        .requestMatchers("/auth/login").permitAll()
+//    .requestMatchers("/orders/admin/**").hasRole("ADMIN")
+//    .requestMatchers("/orders/**").hasAnyRole("USER", "ADMIN")
+//    .anyRequest().authenticated()
+//)
