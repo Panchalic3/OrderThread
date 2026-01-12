@@ -7,6 +7,7 @@ import com.example.demo.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 
@@ -48,12 +49,12 @@ public class OrderService {
 
     // 3️⃣ Cancel Order (optional)
     public OrderResponse cancelOrder(String orderId) {
-        OrderRequest order = repo.findById(orderId).orElseGet(null);
-        if (order == null) {
+        Optional<OrderRequest> order = repo.findById(orderId);
+        if (order.isEmpty()) {
             return new OrderResponse(orderId, "NOT_FOUND", "Order not found");
         }
 
-        order.setStatus("Cancelled");
+        repo.delete(order.get());
         return new OrderResponse(orderId, "Cancelled", "Order is cancelled");
     }
 }

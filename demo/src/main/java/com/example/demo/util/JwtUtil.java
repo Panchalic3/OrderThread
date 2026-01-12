@@ -26,8 +26,8 @@ public class JwtUtil {
     // secret key used for signing token
     //creates a secure SecretKey for HMAC-based JWT signing and ensures the key length is cryptographically safe.
     private final SecretKey secretKey = Keys.hmacShaKeyFor("mysecretkeymysecretkeymysecretkey12345".getBytes());
-    // token validity (5 minutes)
-    private final long jwtExpirationMs = 5 * 60 * 1000;
+    // token validity (59 minutes)
+    private final long jwtExpirationMs = 59 * 60 * 1000;
 
     //Generate JWT Token
     public String generateToken(String username) {
