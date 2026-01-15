@@ -31,12 +31,14 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login").permitAll()
-                        .anyRequest().authenticated()
-                ) //.addFilterAt replaces the default spring default authentication filter
+                        .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);//Run my JWT filter BEFORE Spring’s default authentication filter.
+
+        return http.build();
+
         // Spring’s default authentication filter - it is the username and password we added in the application.properties
         // at the very begening, or the spring auto generated password in the console at application start
-
+        //.addFilterAt replaces the default spring default authentication filter
         /** sessionManagement -> A session is Server-side memory -> You login with username + password
          Server creates a session - Session ID stored in cookie - Browser sends cookie on every request
          *
@@ -50,7 +52,7 @@ public class SecurityConfig {
 //                        .authorizeHttpRequests(auth -> auth.anyRequest()
 //                .permitAll()); -> This line permits all
 
-        return http.build();
+
     }
 //so that user passwords can be securely encrypted before
 // storing and later matched during authentication.
