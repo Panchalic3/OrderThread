@@ -2,12 +2,14 @@ package com.example.demo.process;
 
 import com.example.demo.model.request.OrderRequest;
 import com.example.demo.repository.OrderRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
 import java.util.concurrent.ExecutorService;
 
 @Component
+@Slf4j
 public class OrderProcess {
 
     @Autowired
@@ -63,7 +65,7 @@ public class OrderProcess {
                 checkAndMarkCompleted(orderId);
 
             } catch (OptimisticLockingFailureException e) {
-                // another thread updated first → retry
+                log.info("OptimisticLockingFailureException caught. Retrying. msg is " +e.getMessage());
             }
         }
     }
