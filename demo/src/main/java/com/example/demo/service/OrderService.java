@@ -7,6 +7,7 @@ import com.example.demo.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -56,5 +57,9 @@ public class OrderService {
 
         repo.delete(order.get());
         return new OrderResponse(orderId, "Cancelled", "Order is cancelled");
+    }
+
+    public List<OrderRequest> getAllOrder() {
+        return repo.findAll();
     }
 }

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
@@ -28,6 +30,11 @@ public class OrderController {
     @GetMapping("/{orderId}")
     public OrderRequest getOrderStatus(@PathVariable String orderId) {
         return orderService.getOrderStatus(orderId);
+    }
+
+    @GetMapping("/all")
+    public List<OrderRequest> getAllOrder(){
+        return orderService.getAllOrder();
     }
 
     @PreAuthorize("hasRole('ADMIN')")
