@@ -5,6 +5,7 @@ import com.example.demo.model.response.OrderResponse;
 import com.example.demo.process.OrderProcess;
 import com.example.demo.repository.OrderRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,6 +60,7 @@ public class OrderService {
         return new OrderResponse(orderId, "Cancelled", "Order is cancelled");
     }
 
+    @Cacheable(value = "orders")
     public List<OrderRequest> getAllOrder() {
         return repo.findAll();
     }
