@@ -37,7 +37,7 @@ public class SecurityConfig {
         return http.build();
 
         // Spring’s default authentication filter - it is the username and password we added in the application.properties
-        // at the very begening, or the spring auto generated password in the console at application start
+        // at the very beginning, or the spring auto generated password in the console at application start
         //.addFilterAt replaces the default spring default authentication filter
         /** sessionManagement -> A session is Server-side memory -> You login with username + password
          Server creates a session - Session ID stored in cookie - Browser sends cookie on every request
