@@ -22,7 +22,7 @@ public class OrderController {
     }
 
     @PostMapping("/placeOrder")
-    public OrderResponse placeOrder(@RequestBody OrderRequest orderRequest) {
+    public OrderResponse placeOrder(@RequestBody OrderRequest orderRequest) throws InterruptedException {
         // Calls service to handle order
         return orderService.createOrder(orderRequest);
     }
@@ -33,7 +33,7 @@ public class OrderController {
     }
 
     @GetMapping("/all")
-    public List<OrderRequest> getAllOrder(){
+    public List<OrderRequest> getAllOrder() throws InterruptedException {
         return orderService.getAllOrder();
     }
 

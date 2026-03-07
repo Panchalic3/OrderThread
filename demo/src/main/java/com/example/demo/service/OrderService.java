@@ -22,7 +22,7 @@ public class OrderService {
     OrderProcess process;
 
     //  Create Order
-    public OrderResponse createOrder(OrderRequest orderRequest) {
+    public OrderResponse createOrder(OrderRequest orderRequest) throws InterruptedException {
         String orderId = UUID.randomUUID().toString();
         orderRequest.setOrderID(orderId);
         orderRequest.setStatus("CREATED");
@@ -31,7 +31,7 @@ public class OrderService {
         orderRequest.setPaymentDone(false);
         orderRequest.setInventoryDone(false);
         orderRequest.setNotificationDone(false);
-
+        Thread.sleep(5000);
         OrderRequest saved = repo.save(orderRequest);
 
         OrderResponse response = new OrderResponse();
@@ -61,7 +61,8 @@ public class OrderService {
     }
 
     @Cacheable(value = "orders")
-    public List<OrderRequest> getAllOrder() {
+    public List<OrderRequest> getAllOrder() throws InterruptedException {
+        Thread.sleep(5000);
         return repo.findAll();
     }
 }
