@@ -13,7 +13,7 @@ import com.example.demo.jwtfilter.JwtFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity // Required when you want custom security config// enables Spring Security and allows customization of web security configurations."
 @EnableMethodSecurity// as a part of step 8 authorization, enables   @PreAuthorize, @PostAuthorize
 public class SecurityConfig {
 
