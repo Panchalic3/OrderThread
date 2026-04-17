@@ -19,9 +19,11 @@ public class SecurityConfig {
 
     // added as a part of step 7
     private final JwtFilter jwtFilter;
+    private final RateLimitFilter rateLimitFilter; // for rate limit step 2
 
-    public SecurityConfig(JwtFilter jwtFilter) {
+    public SecurityConfig(JwtFilter jwtFilter, RateLimitFilter rateLimitFilter) {
         this.jwtFilter = jwtFilter;
+        this.rateLimitFilter = rateLimitFilter;
     }
 
     @Bean
@@ -32,6 +34,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login").permitAll()
                         .anyRequest().authenticated())
+                .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)// for rate limit step 2
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);//Run my JWT filter BEFORE Spring’s default authentication filter.
 
         return http.build();
