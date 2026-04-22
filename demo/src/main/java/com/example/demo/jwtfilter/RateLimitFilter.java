@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.demo.jwtfilter;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
@@ -24,6 +24,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
                 .addLimit(Bandwidth.simple(10, Duration.ofMinutes(1))) // 10 req/min
                 .build();
     }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String key = getClientKey(request);
