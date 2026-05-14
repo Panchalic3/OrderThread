@@ -45,7 +45,9 @@ public class OrderService {
     }
 
     // 2️⃣ Get Order Status
-    public OrderRequest getOrderStatus(String orderId) {
+    @Cacheable(value = "orders", key = "#orderId")
+    public OrderRequest getOrderStatus(String orderId)  throws InterruptedException {
+        Thread.sleep(5000);
         return repo.findById(orderId).orElseGet(null);
     }
 

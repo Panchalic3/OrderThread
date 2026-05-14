@@ -28,7 +28,7 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public OrderRequest getOrderStatus(@PathVariable String orderId) {
+    public OrderRequest getOrderStatus(@PathVariable String orderId) throws InterruptedException  {
         return orderService.getOrderStatus(orderId);
     }
 
